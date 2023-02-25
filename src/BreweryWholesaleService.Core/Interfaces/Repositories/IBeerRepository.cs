@@ -10,14 +10,14 @@ namespace BreweryWholesaleService.Core.Interfaces.Repositories
 {
     public interface IBeerRepository
     {
-        Task<Result<int>> CreateNewBeer(_Beer newBear);
+        Task<int> CreateNewBeer(_Beer newBear);
 
 
 
-        Task<Result<List<_Beer>>> GetBeersByBrewery(string breweryName);
+        Task<List<_Beer>> GetBeersByBrewery(string breweryName);
        
 
-        Task<Result<int>> DeleteBeerByName(string BeerName);
+        Task<int> DeleteBeerByName(string BeerName);
        
     }
 }

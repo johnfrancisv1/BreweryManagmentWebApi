@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreweryWholesaleService.Api", "src\BreweryWholesaleService.Api\BreweryWholesaleService.Api.csproj", "{5F100E2D-CAAC-4317-9A08-8A5DF5418C92}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{497B95C3-8337-4114-8BBA-C8B6051EBAAB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8607CAAE-C16E-44A0-8D0A-93273E81E1A3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreweryWholesaleService.Core", "src\BreweryWholesaleService.Core\BreweryWholesaleService.Core.csproj", "{A7468E83-408F-4A4F-A3FE-5B7F884E17DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BreweryWholesaleService.Infrastructure", "src\BreweryWholesaleService.Infrastructure\BreweryWholesaleService.Infrastructure.csproj", "{DDF25071-4FA2-4CE1-BD9A-5801A118A2D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreweryWholesaleService.Infrastructure", "src\BreweryWholesaleService.Infrastructure\BreweryWholesaleService.Infrastructure.csproj", "{DDF25071-4FA2-4CE1-BD9A-5801A118A2D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BreweryWholesaleService.Api.Tests", "tests\BreweryWholesaleService.Api.Tests\BreweryWholesaleService.Api.Tests.csproj", "{0E3119A9-7915-48A0-BDC4-71A8C1BBD96A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreweryWholesaleService.Api.Tests", "tests\BreweryWholesaleService.Api.Tests\BreweryWholesaleService.Api.Tests.csproj", "{0E3119A9-7915-48A0-BDC4-71A8C1BBD96A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BreweryWholesaleService.Api", "src\BreweryWholesaleService.Api\BreweryWholesaleService.Api.csproj", "{B153C15C-947B-4749-BA4E-C265A1CEC936}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5F100E2D-CAAC-4317-9A08-8A5DF5418C92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5F100E2D-CAAC-4317-9A08-8A5DF5418C92}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5F100E2D-CAAC-4317-9A08-8A5DF5418C92}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5F100E2D-CAAC-4317-9A08-8A5DF5418C92}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A7468E83-408F-4A4F-A3FE-5B7F884E17DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A7468E83-408F-4A4F-A3FE-5B7F884E17DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7468E83-408F-4A4F-A3FE-5B7F884E17DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -37,15 +33,19 @@ Global
 		{0E3119A9-7915-48A0-BDC4-71A8C1BBD96A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E3119A9-7915-48A0-BDC4-71A8C1BBD96A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E3119A9-7915-48A0-BDC4-71A8C1BBD96A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B153C15C-947B-4749-BA4E-C265A1CEC936}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B153C15C-947B-4749-BA4E-C265A1CEC936}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B153C15C-947B-4749-BA4E-C265A1CEC936}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B153C15C-947B-4749-BA4E-C265A1CEC936}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{5F100E2D-CAAC-4317-9A08-8A5DF5418C92} = {497B95C3-8337-4114-8BBA-C8B6051EBAAB}
 		{A7468E83-408F-4A4F-A3FE-5B7F884E17DD} = {497B95C3-8337-4114-8BBA-C8B6051EBAAB}
 		{DDF25071-4FA2-4CE1-BD9A-5801A118A2D2} = {497B95C3-8337-4114-8BBA-C8B6051EBAAB}
 		{0E3119A9-7915-48A0-BDC4-71A8C1BBD96A} = {8607CAAE-C16E-44A0-8D0A-93273E81E1A3}
+		{B153C15C-947B-4749-BA4E-C265A1CEC936} = {497B95C3-8337-4114-8BBA-C8B6051EBAAB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {73234EA4-4DCA-419F-872B-FA1D821A4329}

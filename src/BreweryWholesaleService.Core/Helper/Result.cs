@@ -11,6 +11,8 @@ namespace BreweryWholesaleService.Core.Helper
     public class Result<T>
     {
 
+       
+
         public bool Succeeded { get; set; } = true;
 
         public T Value { get; set; }
