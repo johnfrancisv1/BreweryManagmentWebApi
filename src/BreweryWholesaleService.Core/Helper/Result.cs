@@ -17,6 +17,8 @@ namespace BreweryWholesaleService.Core.Helper
 
         public T Value { get; set; }
 
+        public Exception Exception { get; set; }
+
         public List<string> Errors { get; set; } = new List<string>();
 
         public int StatusCode { get; set; }
@@ -27,8 +29,10 @@ namespace BreweryWholesaleService.Core.Helper
             Succeeded = false;
         }
 
+        public string ErrorMessage { set { Errors.Add(value); } }
 
-        public string allErrors
+
+        public string ErrorsStr
         {
             get
             {

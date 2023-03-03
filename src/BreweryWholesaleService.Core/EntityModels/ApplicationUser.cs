@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BreweryWholesaleService.Infrastructure.EntityModels
+namespace BreweryWholesaleService.Core.EntityModels
 {
     public class ApplicationUser : IdentityUser
     {

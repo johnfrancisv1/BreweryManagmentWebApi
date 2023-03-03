@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using BreweryWholesaleService.Core.EntityModels;
 using BreweryWholesaleService.Core.Enums;
 using BreweryWholesaleService.Core.Helper;
 using BreweryWholesaleService.Core.Interfaces.Repositories;
-using BreweryWholesaleService.Core.Models;
+using BreweryWholesaleService.Core.Models.Beer;
 using BreweryWholesaleService.Infrastructure.EntityModels;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -43,33 +44,30 @@ namespace BreweryWholesaleService.Infrastructure.Repositories
             return   beer.Id ;
         }
 
-        public async Task<int> DeleteBeerByName(string BeerName)
+        public async Task<int> DeleteBeer(_Beer _beer)
         {
-           Beer b = await _dbContext.Beers.Where(b => b.Name == BeerName).FirstOrDefaultAsync();
-            if (b == null)
-            {
-                 
-                var exp = new Exception("Record Not Found");
-                exp.Data.Add("Code", ResultCodes.RecordNotFound);
-                throw exp;
-            }
+          
 
-            _dbContext.Entry(b).State = EntityState.Deleted;
+            Beer beer = _mapper.Map<Beer>(_beer);
+            
+            _dbContext.Attach(beer);
+            _dbContext.Entry(beer).State = EntityState.Deleted;
            int r = await _dbContext.SaveChangesAsync();
 
             return r;
 
         }
 
-        public async Task<List<_Beer>> GetBeersByBrewery(string breweryName)
+        public async Task<_Beer> GetBeerByName(string beerName)
         {
-            string breweryID = await _dbContext.Users.Where(u => u.Name == breweryName).Select(u => u.Id).FirstOrDefaultAsync();
-            if (string.IsNullOrEmpty(breweryID))
-            {
-                var exp = new Exception("Invaild User ID");
-                exp.Data.Add("Code", ResultCodes.InvaildUserID);
-                throw exp;
-            }
+            Beer beer = await _dbContext.Beers.Where(b => b.Name == beerName).SingleOrDefaultAsync();
+
+            return _mapper.Map<_Beer>(beer);
+        }
+
+        public async Task<List<_Beer>> GetBeersByBreweryID(string breweryID)
+        {
+          
            List<Beer> Beers = await _dbContext.Beers.Where(b => b.BreweryId == breweryID).ToListAsync();
             return _mapper.Map<List<_Beer>>(Beers);
              

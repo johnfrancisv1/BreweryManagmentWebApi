@@ -1,3 +1,4 @@
+using BreweryWholesaleService.Core.EntityModels;
 using BreweryWholesaleService.Core.Interfaces.Repositories;
 using BreweryWholesaleService.Core.Interfaces.Services;
 using BreweryWholesaleService.Core.Services;
@@ -33,7 +34,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 
 
 builder.Services.AddTransient<IBeerRepository, BeerRepository>();
-builder.Services.AddTransient<IBreweryManagmentService, BreweryManagmentService>();
+builder.Services.AddTransient<IBeerService, BeerService>();
 
 
 

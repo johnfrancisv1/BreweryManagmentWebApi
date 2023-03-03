@@ -1,5 +1,5 @@
 ﻿using BreweryWholesaleService.Core.Helper;
-using BreweryWholesaleService.Core.Models;
+using BreweryWholesaleService.Core.Models.Beer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +12,16 @@ namespace BreweryWholesaleService.Core.Interfaces.Repositories
     {
         Task<int> CreateNewBeer(_Beer newBear);
 
+        Task<_Beer> GetBeerByName(string beerName);
+
+        Task<List<_Beer>> GetBeersByBreweryID(string breweryID);
+
+      
 
 
-        Task<List<_Beer>> GetBeersByBrewery(string breweryName);
-       
+        Task<int> DeleteBeer(_Beer beer);
 
-        Task<int> DeleteBeerByName(string BeerName);
+
        
     }
 }

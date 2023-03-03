@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace BreweryWholesaleService.Core.Enums
 {
-   public enum ResultCodes : int { RecordNotFound = 0 , InvaildUserID = 1  }
+   public enum ExceptionCodes : int { RecordNotFound = 0 , InvaildUserID = 1 , UnAuthorized = 2 , DbError =3, InvaildServiceDataRequest = 4 }
     
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BreweryWholesaleService.Infrastructure.EntityModels
+namespace BreweryWholesaleService.Core.EntityModels
 {
     public partial class Beer
     {

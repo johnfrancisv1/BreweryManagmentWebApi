@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BreweryWholesaleService.Core.EntityModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -20,7 +21,7 @@ namespace BreweryWholesaleService.Infrastructure.EntityModels
        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-          
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Beer>(entity =>
             {

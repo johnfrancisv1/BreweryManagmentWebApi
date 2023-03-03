@@ -1,4 +1,5 @@
 ﻿
+using BreweryWholesaleService.Core.EntityModels;
 using BreweryWholesaleService.Core.Models.Identity;
 using BreweryWholesaleService.Infrastructure.EntityModels;
 using Microsoft.AspNetCore.Authorization;
@@ -41,48 +42,65 @@ namespace BreweryWholesaleService.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("getToken")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> GetToken([FromBody] LoginModel LogIn)
         {
 
-            var user = _dbContext.Users.FirstOrDefault(x => x.UserName == LogIn.UserName);
-            if (user != null)
+            if (!ModelState.IsValid)
             {
-                var signInResault = await _signInManager.CheckPasswordSignInAsync(user, LogIn.Password, false);
-                if (signInResault.Succeeded)
-                {
+                return BadRequest(ModelState);
+            }
 
-                   var rollNames = await _userManager.GetRolesAsync(user);
-                    var tokenhandler = new JwtSecurityTokenHandler();
-                    var key = Encoding.ASCII.GetBytes(_configuration.GetValue<string>("SecurityKey"));
-                    var tokenDescriptor = new SecurityTokenDescriptor
+            try
+            {
+                ApplicationUser user = await _userManager.FindByNameAsync(LogIn.UserName);
+                if (user != null)
+                {
+                    var signInResault = await _signInManager.CheckPasswordSignInAsync(user, LogIn.Password, false);
+                    if (signInResault.Succeeded)
                     {
-                        Subject = new ClaimsIdentity(new Claim[]
+
+                        var rollNames = await _userManager.GetRolesAsync(user);
+                        var tokenhandler = new JwtSecurityTokenHandler();
+                        var key = Encoding.ASCII.GetBytes(_configuration.GetValue<string>("SecurityKey"));
+                        var tokenDescriptor = new SecurityTokenDescriptor
                         {
+                            Subject = new ClaimsIdentity(new Claim[]
+                            {
                       new Claim(ClaimTypes.NameIdentifier ,user.Id ),
                     new Claim(ClaimTypes.Name ,LogIn.UserName ),
-                  
-                   
-                        }),
-                        Expires = DateTime.UtcNow.AddDays(365),
-                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                    };
-                    foreach(var roll in rollNames)
-                    {
-                        tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, roll));
+
+
+                            }),
+                            Expires = DateTime.UtcNow.AddDays(365),
+                            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                        };
+                        foreach (var roll in rollNames)
+                        {
+                            tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, roll));
+                        }
+
+
+                        var token = tokenhandler.CreateToken(tokenDescriptor);
+                        var tokenStr = tokenhandler.WriteToken(token);
+
+                        return Ok(new { Token = tokenStr });
                     }
-
-
-                    var token = tokenhandler.CreateToken(tokenDescriptor);
-                    var tokenStr = tokenhandler.WriteToken(token);
-
-                    return Ok(new { Token = tokenStr });
+                    else
+                    {
+                        return Unauthorized("faild , Try again");
+                    }
                 }
-                else
-                {
-                    return Ok("faild , Try again");
-                }
+                return Unauthorized("faild , Try again");
             }
-            return Ok("faild , Try again");
+            catch(Exception E)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+            }
+           
 
 
 
@@ -96,55 +114,61 @@ namespace BreweryWholesaleService.Api.Controllers
         [HttpPost("RegisterDefaults")]
         public async Task<ActionResult> RegisterDefaults([FromBody] LoginModel logInModel)
         {
-            if (logInModel.UserName == "JohnFrancis" && logInModel.Password == "TestPassword")
+            if (!ModelState.IsValid)
             {
-                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                if (logInModel.UserName == "JohnFrancis" && logInModel.Password == "TestPassword")
                 {
-                    foreach (var rollName in new string[] { "Brewery" , "WholeSaler" })
+                    using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     {
-                        var IsRollExistes = await _rollManager.RoleExistsAsync(rollName);
-                        if (!IsRollExistes)
+                        foreach (var rollName in new string[] { "Brewery", "WholeSaler" })
                         {
-                            IdentityResult Resault = await _rollManager.CreateAsync(new IdentityRole() { Name = rollName });
-                            if (!Resault.Succeeded)
+                            var IsRollExistes = await _rollManager.RoleExistsAsync(rollName);
+                            if (!IsRollExistes)
                             {
-                                foreach(var err in Resault.Errors)
+                                IdentityResult Resault = await _rollManager.CreateAsync(new IdentityRole() { Name = rollName });
+                                if (!Resault.Succeeded)
                                 {
-                                    _logger.LogError(err.Description);
+                                    foreach (var err in Resault.Errors)
+                                    {
+                                        _logger.LogError(err.Description);
+                                    }
+                                    return StatusCode((int)HttpStatusCode.InternalServerError);
                                 }
-                                return StatusCode((int)HttpStatusCode.InternalServerError);
                             }
                         }
-                    }
 
-                    ApplicationUser appUser_Abbaye = new ApplicationUser()
-                    {
-                        Name = "Abbaye de Leffe",
-                        UserName = "Abbaye"
-                    };
-
-                 
-
-                    ApplicationUser appUser_Heineken = new ApplicationUser()
-                    {
-                        Name = "Heineken",
-                        UserName = "Heineken"
-                    };
-
-                    ApplicationUser WholeSaler1 = new ApplicationUser()
-                    {
-                        Name = "WholeSaler1",
-                        UserName = "WholeSaler1"
-                    };
-
-                    ApplicationUser WholeSaler2 = new ApplicationUser()
-                    {
-                        Name = "WholeSaler2",
-                        UserName = "WholeSaler2"
-                    };
+                        ApplicationUser appUser_Abbaye = new ApplicationUser()
+                        {
+                            Name = "Abbaye de Leffe",
+                            UserName = "Abbaye"
+                        };
 
 
-                    List<Tuple<ApplicationUser, string>> Users = new List<Tuple<ApplicationUser, string>>()
+
+                        ApplicationUser appUser_Heineken = new ApplicationUser()
+                        {
+                            Name = "Heineken",
+                            UserName = "Heineken"
+                        };
+
+                        ApplicationUser WholeSaler1 = new ApplicationUser()
+                        {
+                            Name = "WholeSaler1",
+                            UserName = "WholeSaler1"
+                        };
+
+                        ApplicationUser WholeSaler2 = new ApplicationUser()
+                        {
+                            Name = "WholeSaler2",
+                            UserName = "WholeSaler2"
+                        };
+
+
+                        List<Tuple<ApplicationUser, string>> Users = new List<Tuple<ApplicationUser, string>>()
                     {
                         new Tuple<ApplicationUser, string>(appUser_Abbaye ,"Brewery" ),
                         new Tuple<ApplicationUser, string>(appUser_Heineken ,"Brewery" ),
@@ -154,59 +178,65 @@ namespace BreweryWholesaleService.Api.Controllers
                     };
 
 
-                    foreach(var userPair in Users)
-                    {
-
-                       var user = await _userManager.FindByNameAsync(userPair.Item1.UserName);
-                        if (user == null)
+                        foreach (var userPair in Users)
                         {
-                            IdentityResult Resault = await _userManager.CreateAsync(userPair.Item1, "TestPassword01");
-                          
-                            if (!Resault.Succeeded)
+
+                            var user = await _userManager.FindByNameAsync(userPair.Item1.UserName);
+                            if (user == null)
                             {
-                                foreach (var err in Resault.Errors)
+                                IdentityResult Resault = await _userManager.CreateAsync(userPair.Item1, "TestPassword01");
+
+                                if (!Resault.Succeeded)
                                 {
-                                    _logger.LogError(err.Description);
+                                    foreach (var err in Resault.Errors)
+                                    {
+                                        _logger.LogError(err.Description);
+                                    }
+                                    return StatusCode((int)HttpStatusCode.InternalServerError);
                                 }
-                                return StatusCode((int)HttpStatusCode.InternalServerError);
+
+
                             }
 
-                          
+
+
+                            bool isUserinRoll = await _userManager.IsInRoleAsync(user, userPair.Item2);
+                            if (!isUserinRoll)
+                            {
+                                IdentityResult rollResault = await _userManager.AddToRoleAsync(user, userPair.Item2);
+                                if (!rollResault.Succeeded)
+                                {
+                                    foreach (var err in rollResault.Errors)
+                                    {
+                                        _logger.LogError(err.Description);
+                                    }
+                                    return StatusCode((int)HttpStatusCode.InternalServerError);
+                                }
+                            }
+
+
+
                         }
 
 
 
-                      bool isUserinRoll = await _userManager.IsInRoleAsync(user, userPair.Item2);
-                        if (!isUserinRoll)
-                        {
-                            IdentityResult rollResault = await _userManager.AddToRoleAsync(user, userPair.Item2);
-                            if (!rollResault.Succeeded)
-                            {
-                                foreach (var err in rollResault.Errors)
-                                {
-                                    _logger.LogError(err.Description);
-                                }
-                                return StatusCode((int)HttpStatusCode.InternalServerError);
-                            }
-                        }
+                        scope.Complete();
 
-                      
 
                     }
 
-
-
-                    scope.Complete();
-
-                  
+                    return Ok();
                 }
-
-                return Ok();
+                else
+                {
+                    return Unauthorized();
+                }
             }
-            else
+            catch(Exception E)
             {
-                return Unauthorized();
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
             }
+        
         }
     }
 }
