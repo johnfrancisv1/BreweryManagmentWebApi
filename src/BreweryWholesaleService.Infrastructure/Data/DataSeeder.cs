@@ -1,10 +1,12 @@
 ﻿using BreweryWholesaleService.Core.EntityModels;
+using BreweryWholesaleService.Core.Helper;
 using BreweryWholesaleService.Core.Interfaces.Services;
 using BreweryWholesaleService.Infrastructure.EntityModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -19,12 +21,12 @@ namespace BreweryWholesaleService.Infrastructure.Data
         private readonly BreweryContext _DbContext;
         private readonly UserManager<ApplicationUser> _UserManager;
         private readonly RoleManager<IdentityRole> _RoleManager;
-        private readonly ILogger _Logger;
-        public DataSeeder(BreweryContext DbContext, UserManager<ApplicationUser> UserManager, RoleManager<IdentityRole> RoleManager, ILogger Logger) 
+       
+        public DataSeeder(BreweryContext DbContext, UserManager<ApplicationUser> UserManager, RoleManager<IdentityRole> RoleManager) 
         {
             this._DbContext = DbContext;
             this._RoleManager = RoleManager;
-            this._Logger = Logger; 
+            this._UserManager = UserManager;
         }
 
         public async Task SeedData() 
@@ -41,7 +43,7 @@ namespace BreweryWholesaleService.Infrastructure.Data
                         {
                             foreach (var err in Resault.Errors)
                             {
-                                _Logger.LogError(err.Description);
+                                throw new Exception(string.Join(",", Resault.Errors));
                             }
                           
                         }
@@ -86,69 +88,72 @@ namespace BreweryWholesaleService.Infrastructure.Data
 
                 foreach (var userPair in Users)
                 {
-
-                    var user = await _UserManager.FindByNameAsync(userPair.Item1.UserName);
-                    if (user == null)
-                    {
+                   
+              
                         IdentityResult Resault = await _UserManager.CreateAsync(userPair.Item1, "TestPassword01");
 
                         if (!Resault.Succeeded)
                         {
-                            foreach (var err in Resault.Errors)
-                            {
-                                _Logger.LogError(err.Description);
-                            }
+                            throw new Exception(string.Join(",", Resault.Errors));
                            
                         }
 
 
-                    }
+                    
 
+                    var user = await _UserManager.FindByNameAsync(userPair.Item1.UserName);
 
-
-                    bool isUserinRoll = await _UserManager.IsInRoleAsync(user, userPair.Item2);
-                    if (!isUserinRoll)
-                    {
+                  
                         IdentityResult rollResault = await _UserManager.AddToRoleAsync(user, userPair.Item2);
                         if (!rollResault.Succeeded)
                         {
                             foreach (var err in rollResault.Errors)
                             {
-                                _Logger.LogError(err.Description);
+                                throw new Exception(string.Join(",", rollResault.Errors));
                             }
                            
                         }
-                    }
+                    
 
 
 
                 }
                 
-                Beer b1 = new Beer()
+                Beer Beer_LeffeBlonde = new Beer()
                 {
                     Name = "Leffe Blonde",
                     AlcoholContent = 6.6,
-                    Price = 2.2m
+                    Price = 2.2m,
+                     BreweryId = GeneDrinksWholeSaler.Id
                 };
 
-                Beer b2 = new Beer()
+                Beer Beer_Demon = new Beer()
                 {
                     Name = "Demon",
                     AlcoholContent = 6.6,
-                    Price = 2.2m
+                    Price = 2.2m,
+                    BreweryId = GeneDrinksWholeSaler.Id
                 };
 
-                _DbContext.Beers.Add(b1);
-                _DbContext.Beers.Add(b2);
+                //_DbContext.Beers.Add(Beer_LeffeBlonde);
+                //_DbContext.Beers.Add(Beer_Demon);
 
               //  await _DbContext.SaveChangesAsync();
 
-                Stock GeneDrinksStock = new Stock()
+                Stock GeneDrinksLeffeBlondeStock = new Stock()
                 {
-                    Bear = b1,
-                    WholeSaler = GeneDrinksWholeSaler
+                    Beer = Beer_LeffeBlonde,
+                    WholeSaler = GeneDrinksWholeSaler,
+                    Quantity = 5
                 };
-                _DbContext.Stocks.Add(GeneDrinksStock);
+                Stock GeneDrinksDemonStock = new Stock()
+                {
+                    Beer = Beer_Demon,
+                    WholeSaler = GeneDrinksWholeSaler,
+                    Quantity = 7
+                };
+                _DbContext.Stocks.Add(GeneDrinksLeffeBlondeStock);
+                _DbContext.Stocks.Add(GeneDrinksDemonStock);
 
                 await _DbContext.SaveChangesAsync();
 

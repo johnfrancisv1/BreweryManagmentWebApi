@@ -9,7 +9,7 @@ namespace BreweryWholesaleService.Core.Models.Sales
     public class SaleQuote
     {
         public string ClientName { get; set; }
-        List<QuoteItem> _Items { get; set; }
+        List<QuoteItem> _Items { get; set; } = new List<QuoteItem>();
 
         int totalQuantity = 0;
         decimal totalPrice = 0;

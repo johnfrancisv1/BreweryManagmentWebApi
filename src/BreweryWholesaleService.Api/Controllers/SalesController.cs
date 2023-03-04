@@ -25,21 +25,18 @@ namespace BreweryWholesaleService.Api.Controllers
         }
 
 
-        [HttpGet("UpdateBeerQuantity")]
+        [HttpPut("GetQuote")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = RollNames.WholeSaler)]
-        public async Task<IActionResult> UpdateBeerQuantity([FromBody] QuoteRequest QuoteRequest)
+        public async Task<IActionResult> GetQuote([FromBody] QuoteRequest QuoteRequest)
         {
 
             var WholeSalerUserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (WholeSalerUserID == null)
-            {
-                return Unauthorized();
-            }
+          
 
 
             if (QuoteRequest == null)

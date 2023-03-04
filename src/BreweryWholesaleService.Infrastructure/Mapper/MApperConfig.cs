@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BreweryWholesaleService.Core.Interfaces.Services
+namespace BreweryWholesaleService.Infrastructure.Mapper
 {
-    public interface IDataSeeder
+    public class MApperConfig
     {
-        Task SeedData();
-
     }
 }

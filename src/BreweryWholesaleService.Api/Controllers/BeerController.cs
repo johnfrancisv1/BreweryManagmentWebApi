@@ -38,10 +38,7 @@ namespace BreweryWholesaleService.Api.Controllers
         {
 
            var UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if(UserID == null)
-            {
-                return Unauthorized();
-            }
+           
             
 
             if(NewBearModel == null)
@@ -49,12 +46,17 @@ namespace BreweryWholesaleService.Api.Controllers
                 return BadRequest();
             }
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
 
             try
             {
                 int result = await _beerService.CreateNewBeer(NewBearModel, UserID);
 
-                return Ok();
+                return Ok(result);
             }
             catch (MyException E)
             {
@@ -92,7 +94,7 @@ namespace BreweryWholesaleService.Api.Controllers
             try
             {
                int Result = await _beerService.DeleteBeerByName(BearName);
-                return Ok();
+                return NoContent();
             }catch(MyException E)
             {
                 return StatusCode(HttpRespondHelper.GetStatusCode(E.ExceptionCode), E.Message);

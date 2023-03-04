@@ -18,29 +18,18 @@ namespace BreweryWholesaleService.Core.Services
     public class BeerService : IBeerService
     {
         private readonly IBeerRepository _bearRepository;
-        private readonly UserManager<ApplicationUser> _UserManager;
+        private readonly IUserRepository _userRepository;
      
-        public BeerService(IBeerRepository _bearRepository, UserManager<ApplicationUser> _UserManager)
+        public BeerService(IBeerRepository _bearRepository, IUserRepository _userRepository)
         {
             this._bearRepository = _bearRepository ?? throw new ArgumentNullException(nameof(_bearRepository));
-            this._UserManager = _UserManager ?? throw new ArgumentNullException(nameof(_UserManager));
+            this._userRepository = _userRepository ?? throw new ArgumentNullException(nameof(_userRepository));
         }
         public async Task<int> CreateNewBeer(RegisterNewBeerModel NewBeerModel,string BreweryUserID)
         {
             try
             {
-                if (String.IsNullOrEmpty(NewBeerModel.Name))
-                {
-                    throw new MyException((int)ExceptionCodes.InvaildServiceDataRequest, "Bear Name Cant be Empty");
-                   // return StatusCode(StatusCodes.Status400BadRequest, );
-
-                }
-                if (NewBeerModel.Price <= 0)
-                {
-                    throw new MyException((int)ExceptionCodes.InvaildServiceDataRequest, "Bear Price Must be positive");
-                 
-
-                }
+              
 
                 _Beer Bear = new _Beer()
                 {
@@ -112,20 +101,16 @@ namespace BreweryWholesaleService.Core.Services
 
         public async Task<IEnumerable<_Beer>> GetBeersByBreweryName(string breweryName)
         {
-         ApplicationUser User = await _UserManager.FindByNameAsync(breweryName);
-            if(User == null)
+            string UserID = await _userRepository.GetUserIDByUserName(breweryName);
+            if(String.IsNullOrEmpty(UserID))
             {
                 throw new MyException((int)ExceptionCodes.RecordNotFound, "Invaild Brewery User Name");
             }
-            if (String.IsNullOrEmpty(breweryName))
-            {
-                throw new MyException((int)ExceptionCodes.InvaildServiceDataRequest, "Brewery Name Cant be empty");
-
-            }
+           
             try
             {
-              ApplicationUser user = await  _UserManager.FindByNameAsync(breweryName);
-                return await _bearRepository.GetBeersByBreweryID(user.Name);
+             
+                return await _bearRepository.GetBeersByBreweryID(UserID);
               
             }
             catch (Exception E)

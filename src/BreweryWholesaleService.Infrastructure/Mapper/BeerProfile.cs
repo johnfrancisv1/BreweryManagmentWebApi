@@ -16,7 +16,7 @@ namespace BreweryWholesaleService.Infrastructure.Mapper
             public BeerProfile()
             {
                 // Default mapping when property names are same
-                CreateMap<Beer, _Beer>();
+                CreateMap<Beer, _Beer>().ReverseMap();
 
             }
         

@@ -1,6 +1,6 @@
 ﻿using BreweryWholesaleService.Core.Helper;
-using BreweryWholesaleService.Core.Models.Beer;
 using BreweryWholesaleService.Core.Models.Sales;
+using BreweryWholesaleService.Core.Models.Stock;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,6 +17,8 @@ namespace BreweryWholesaleService.Core.Interfaces.Repositories
         Task<int> UpdateStockRecord(_Stock StockRecord);
 
         Task<int> RemoveStockRecord(int Id);
+
+        Task<_Stock> GetStockRecord(int BeerID, String WholeSalerUserID);
 
         Task<List<_Stock>> GetQuoteRequestedStockRecords(QuoteRequest quoteRequest);
 

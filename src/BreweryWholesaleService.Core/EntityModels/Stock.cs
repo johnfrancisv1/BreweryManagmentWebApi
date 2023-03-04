@@ -7,10 +7,10 @@ namespace BreweryWholesaleService.Core.EntityModels
     {
         public int Id { get; set; }
         public string WholeSalerId { get; set; } = null!;
-        public int BearId { get; set; }
+        public int BeerId { get; set; }
         public int Quantity { get; set; }
 
-        public virtual Beer Bear { get; set; } = null!;
+        public virtual Beer Beer { get; set; } = null!;
         public virtual ApplicationUser WholeSaler { get; set; } = null!;
     }
 }

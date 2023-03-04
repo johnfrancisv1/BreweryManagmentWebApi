@@ -35,6 +35,11 @@ namespace BreweryWholesaleService.Api.Controllers
                 return BadRequest();
             }
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
                int resault = await _StockService.AddBeerToWholeSaler(RegisterBeertoWholeSalerModel);

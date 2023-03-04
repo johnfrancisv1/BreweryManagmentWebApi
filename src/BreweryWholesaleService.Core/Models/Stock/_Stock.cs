@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BreweryWholesaleService.Core.Models.Beer;
 
-namespace BreweryWholesaleService.Core.Models.Beer
+namespace BreweryWholesaleService.Core.Models.Stock
 {
     public class _Stock
     {

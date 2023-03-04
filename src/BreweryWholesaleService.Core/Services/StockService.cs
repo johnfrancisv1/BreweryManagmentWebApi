@@ -36,7 +36,7 @@ namespace BreweryWholesaleService.Core.Services
            bool IsUserInWholeSalerRoll = await _UserManager.IsInRoleAsync(user, RollNames.WholeSaler);
             if (!IsUserInWholeSalerRoll)
             {
-                throw new MyException((int)ExceptionCodes.InvaildServiceDataRequest, "User must be in WholeSaler Roll");
+                throw new MyException((int)ExceptionCodes.UnprocessableEntity, "User must be in WholeSaler Roll");
               
             }
 
@@ -56,17 +56,20 @@ namespace BreweryWholesaleService.Core.Services
         public async Task<int> UpdateBeerQuantity(StockUpdateRequest StockUpdate_Request,string WholeSalerId)
         {
             _Beer beer = await _BeerRepository.GetBeerByName(StockUpdate_Request.BeerName);
-
-          
-
-            _Stock StockRecord = new _Stock()
+            if(beer == null)
             {
-                BearId = beer.Id,
-                WholeSalerId = WholeSalerId,
-                Quantity = StockUpdate_Request.Quntity
-            };
+                throw new MyException((int)ExceptionCodes.UnprocessableEntity, "Beer Record Not Found ");
+            }
+            _Stock StockRecord = await _StockRepository.GetStockRecord(beer.Id, WholeSalerId);
+            if(StockRecord == null)
+            {
+                throw new MyException((int)ExceptionCodes.UnprocessableEntity, "Beer must be listed on the whole saler list ");
+            }
 
-            return  await _StockRepository.AddNewStockRecord(StockRecord);
+            StockRecord.Quantity = StockUpdate_Request.Quntity;
+
+
+            return  await _StockRepository.UpdateStockRecord(StockRecord);
 
            
         }

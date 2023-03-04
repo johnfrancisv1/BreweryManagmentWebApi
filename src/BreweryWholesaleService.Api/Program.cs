@@ -2,12 +2,14 @@ using BreweryWholesaleService.Core.EntityModels;
 using BreweryWholesaleService.Core.Interfaces.Repositories;
 using BreweryWholesaleService.Core.Interfaces.Services;
 using BreweryWholesaleService.Core.Services;
+using BreweryWholesaleService.Infrastructure.Data;
 using BreweryWholesaleService.Infrastructure.EntityModels;
 using BreweryWholesaleService.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Writers;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
@@ -33,8 +35,18 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     .AddEntityFrameworkStores<BreweryContext>();
 
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IBeerRepository, BeerRepository>();
+builder.Services.AddTransient<IStockRepositoy, StockRepositoy>();
+builder.Services.AddTransient<IDataSeeder, DataSeeder>();
 builder.Services.AddTransient<IBeerService, BeerService>();
+builder.Services.AddTransient<IStockService, StockService>();
+builder.Services.AddTransient<ISalesService, SalesService>();
+
+
 
 
 
@@ -94,7 +106,20 @@ builder.Services.AddSwaggerGen(options =>
 
 
 var app = builder.Build();
+if (args.Length == 1 && args[0].ToLower() == "seeddata")
+{
+    await seeddata(app);
+}
 
+async Task seeddata(IHost App)
+{
+    var scopedfactory = App.Services.GetService<IServiceScopeFactory>();
+    using (var scope = scopedfactory.CreateScope())
+    {
+        var service = scope.ServiceProvider.GetService<IDataSeeder>();
+        await service.SeedData();
+    }
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -104,6 +129,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

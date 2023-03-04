@@ -2,9 +2,9 @@
 using BreweryWholesaleService.Core.Helper;
 using BreweryWholesaleService.Core.Interfaces.Repositories;
 using BreweryWholesaleService.Core.Interfaces.Services;
-using BreweryWholesaleService.Core.Models.Beer;
 using BreweryWholesaleService.Core.Models.Identity;
 using BreweryWholesaleService.Core.Models.Sales;
+using BreweryWholesaleService.Core.Models.Stock;
 using BreweryWholesaleService.Core.StaticData;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -72,10 +72,10 @@ namespace BreweryWholesaleService.Core.Services
                     throw new MyException((int)ExceptionCodes.InvaildServiceDataRequest, String.Format("The number of beers ordered cannot be greater than the wholesaler's stock"));
                 }
 
-                saleQuote.AddQuoteItem(new QuoteItem() { Beer = StockDic[item.BeerName].Beer });
+                saleQuote.AddQuoteItem(new QuoteItem() { Beer = StockDic[item.BeerName].Beer, Quantity = StockDic[item.BeerName].Quantity });
             }
 
-
+            saleQuote.ClientName = quoteRequest.ClientName;
             return saleQuote;
 
 

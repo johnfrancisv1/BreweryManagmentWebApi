@@ -3,8 +3,8 @@ using BreweryWholesaleService.Core.EntityModels;
 using BreweryWholesaleService.Core.Enums;
 using BreweryWholesaleService.Core.Helper;
 using BreweryWholesaleService.Core.Interfaces.Repositories;
-using BreweryWholesaleService.Core.Models.Beer;
 using BreweryWholesaleService.Core.Models.Sales;
+using BreweryWholesaleService.Core.Models.Stock;
 using BreweryWholesaleService.Infrastructure.EntityModels;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -43,7 +43,8 @@ namespace BreweryWholesaleService.Infrastructure.Repositories
             {
                 BeerName.Add(item.BeerName);
             }
-          List<Stock> StockRecords = await  _dbContext.Stocks.Include(s => s.Bear).AsNoTracking().Where(s => BeerName.Contains(s.Bear.Name)).ToListAsync();
+          List<Stock> StockRecords = await  _dbContext.Stocks.Include(s => s.Beer).AsNoTracking().Where(s => BeerName.Contains(s.Beer.Name)).ToListAsync();
+           
             return _mapper.Map<List<_Stock>>(StockRecords);
         }
 
@@ -66,6 +67,12 @@ namespace BreweryWholesaleService.Infrastructure.Repositories
             _dbContext.Attach(stockRecord);
             _dbContext.Entry(stockRecord).Property(sr => sr.Quantity).IsModified = true;
             return await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<_Stock> GetStockRecord(int BeerID , String WholeSalerUserID)
+        {
+            Stock stockRecord =  await _dbContext.Stocks.AsNoTracking().Where(S => S.BeerId == BeerID && S.WholeSalerId == WholeSalerUserID).SingleOrDefaultAsync();
+            return _mapper.Map<_Stock>(stockRecord);
         }
     }
 }

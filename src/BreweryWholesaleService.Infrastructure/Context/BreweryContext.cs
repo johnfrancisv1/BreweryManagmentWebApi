@@ -49,18 +49,18 @@ namespace BreweryWholesaleService.Infrastructure.EntityModels
             {
                 entity.ToTable("Stock");
 
-                entity.HasIndex(e => new { e.WholeSalerId, e.BearId }, "UC_WholeSaler_Bear")
+                entity.HasIndex(e => new { e.WholeSalerId, e.BeerId }, "UC_WholeSaler_Bear")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.BearId).HasColumnName("BearID");
+                entity.Property(e => e.BeerId).HasColumnName("BeerID");
 
                 entity.Property(e => e.WholeSalerId).HasColumnName("WholeSalerID");
 
-                entity.HasOne(d => d.Bear)
+                entity.HasOne(d => d.Beer)
                     .WithMany(p => p.Stocks)
-                    .HasForeignKey(d => d.BearId)
+                    .HasForeignKey(d => d.BeerId)
                     .HasConstraintName("FK_Stock_Beer");
 
                 entity.HasOne(d => d.WholeSaler)

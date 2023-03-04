@@ -29,4 +29,8 @@
     <ProjectReference Include="..\..\src\BreweryWholesaleService.Core\BreweryWholesaleService.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>

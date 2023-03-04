@@ -16,6 +16,8 @@ namespace BreweryWholesaleService.Api.Helper
                     return StatusCodes.Status400BadRequest;
                 case (int)ExceptionCodes.InvaildUserID:
                     return StatusCodes.Status401Unauthorized;
+                case (int)ExceptionCodes.UnprocessableEntity:
+                    return StatusCodes.Status422UnprocessableEntity;
                 case (int)ExceptionCodes.DbError:
                     return StatusCodes.Status500InternalServerError;
                 default:

@@ -37,7 +37,7 @@ namespace BreweryWholesaleService.Infrastructure.Repositories
 
             };
 
-            _dbContext.Add(newBear);
+            _dbContext.Add(beer);
 
               int r = await _dbContext.SaveChangesAsync();
             newBear.Id = beer.Id;
@@ -60,7 +60,7 @@ namespace BreweryWholesaleService.Infrastructure.Repositories
 
         public async Task<_Beer> GetBeerByName(string beerName)
         {
-            Beer beer = await _dbContext.Beers.Where(b => b.Name == beerName).SingleOrDefaultAsync();
+            Beer beer = await _dbContext.Beers.AsNoTracking().Where(b => b.Name == beerName).SingleOrDefaultAsync();
 
             return _mapper.Map<_Beer>(beer);
         }
@@ -68,7 +68,7 @@ namespace BreweryWholesaleService.Infrastructure.Repositories
         public async Task<List<_Beer>> GetBeersByBreweryID(string breweryID)
         {
           
-           List<Beer> Beers = await _dbContext.Beers.Where(b => b.BreweryId == breweryID).ToListAsync();
+           List<Beer> Beers = await _dbContext.Beers.AsNoTracking().Where(b => b.BreweryId == breweryID).ToListAsync();
             return _mapper.Map<List<_Beer>>(Beers);
              
 
