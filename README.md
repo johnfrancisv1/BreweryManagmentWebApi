@@ -20,15 +20,13 @@ The solution is organized into the following directories:
   - `BreweryWholesaleService.Core.Tests`
   - `BreweryWholesaleService.Shared.Tests`
 
-## Database Design
-
 In this application, breweries and wholesalers are represented as users with Brewery and Wholesaler roles. The Web API is supported with a Swagger UI, where the API functionality is fully tested using the Swagger interface.
 
 To test controller actions that require authorization, follow these steps:
 
 1. Get the user JWT token by using the `api/UserManager/getToken` API and providing the username and password.
 2. Enter the authorization token via the Swagger UI.
-
+## Database Design
 ## Testing
 
 We have implemented testing using .NET Core 6 xUnit for API-level testing and core-level testing using mocking, auto fixture, and fluent assertion.
