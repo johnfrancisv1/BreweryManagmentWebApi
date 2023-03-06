@@ -10,7 +10,7 @@ namespace BreweryWholesaleService.Core.Interfaces.Services
 {
     public interface ISalesService
     {
-        Task<SaleQuote> GetSaleQuote(QuoteRequest quoteRequest,  string WholeSalerID);
+        Task<SaleQuote> GetSaleQuote(QuoteRequest quoteRequest);
 
     }
 }

@@ -13,7 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreweryWholesaleService.Inf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreweryWholesaleService.Api.Tests", "tests\BreweryWholesaleService.Api.Tests\BreweryWholesaleService.Api.Tests.csproj", "{0E3119A9-7915-48A0-BDC4-71A8C1BBD96A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BreweryWholesaleService.Api", "src\BreweryWholesaleService.Api\BreweryWholesaleService.Api.csproj", "{B153C15C-947B-4749-BA4E-C265A1CEC936}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreweryWholesaleService.Api", "src\BreweryWholesaleService.Api\BreweryWholesaleService.Api.csproj", "{B153C15C-947B-4749-BA4E-C265A1CEC936}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreweryWholesaleService.Core.Tests", "BreweryWholesaleService.Core.Tests\BreweryWholesaleService.Core.Tests.csproj", "{2AF17D49-5B3F-4B5D-B36F-D83FEEB49131}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BreweryWholesaleService.Shared.Tests", "BreweryWholesaleService.Shared.Tests\BreweryWholesaleService.Shared.Tests.csproj", "{342D5263-BF4B-4A64-A06A-7500B1619651}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +41,14 @@ Global
 		{B153C15C-947B-4749-BA4E-C265A1CEC936}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B153C15C-947B-4749-BA4E-C265A1CEC936}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B153C15C-947B-4749-BA4E-C265A1CEC936}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AF17D49-5B3F-4B5D-B36F-D83FEEB49131}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AF17D49-5B3F-4B5D-B36F-D83FEEB49131}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AF17D49-5B3F-4B5D-B36F-D83FEEB49131}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AF17D49-5B3F-4B5D-B36F-D83FEEB49131}.Release|Any CPU.Build.0 = Release|Any CPU
+		{342D5263-BF4B-4A64-A06A-7500B1619651}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{342D5263-BF4B-4A64-A06A-7500B1619651}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{342D5263-BF4B-4A64-A06A-7500B1619651}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{342D5263-BF4B-4A64-A06A-7500B1619651}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +58,8 @@ Global
 		{DDF25071-4FA2-4CE1-BD9A-5801A118A2D2} = {497B95C3-8337-4114-8BBA-C8B6051EBAAB}
 		{0E3119A9-7915-48A0-BDC4-71A8C1BBD96A} = {8607CAAE-C16E-44A0-8D0A-93273E81E1A3}
 		{B153C15C-947B-4749-BA4E-C265A1CEC936} = {497B95C3-8337-4114-8BBA-C8B6051EBAAB}
+		{2AF17D49-5B3F-4B5D-B36F-D83FEEB49131} = {8607CAAE-C16E-44A0-8D0A-93273E81E1A3}
+		{342D5263-BF4B-4A64-A06A-7500B1619651} = {8607CAAE-C16E-44A0-8D0A-93273E81E1A3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {73234EA4-4DCA-419F-872B-FA1D821A4329}

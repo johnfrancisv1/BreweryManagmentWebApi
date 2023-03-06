@@ -9,7 +9,9 @@ namespace BreweryWholesaleService.Core.Models.Sales
     public class QuoteRequest
     {
         public string ClientName { get; set; }
-      
+
+        public string WholeSalerName { get; set; }
+
         public List<QuoteItemRequest>  RequestedItems { get; set; }
 
 

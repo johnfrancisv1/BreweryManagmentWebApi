@@ -1,4 +1,5 @@
-﻿using BreweryWholesaleService.Core.Enums;
+﻿using BreweryWholesaleService.Core.EntityModels;
+using BreweryWholesaleService.Core.Enums;
 using BreweryWholesaleService.Core.Helper;
 using BreweryWholesaleService.Core.Interfaces.Repositories;
 using BreweryWholesaleService.Core.Interfaces.Services;
@@ -18,61 +19,63 @@ namespace BreweryWholesaleService.Core.Services
     public class SalesService : ISalesService
     {
         private readonly IStockRepositoy _StockRepositoy;
-      
 
-        public SalesService(IStockRepositoy StockRepositoy )
+        private readonly UserManager<ApplicationUser> _UserManager;
+        public SalesService(IStockRepositoy StockRepositoy, UserManager<ApplicationUser> UserManager)
         {
             this._StockRepositoy = StockRepositoy;
+            this._UserManager = UserManager;
 
         }
-        public async Task<SaleQuote> GetSaleQuote(QuoteRequest quoteRequest, string WholeSalerId)
+        public async Task<SaleQuote> GetSaleQuote(QuoteRequest quoteRequest)
         {
-            //_ApplicationUser User = await _ApplicationUserManager.FindUserByID(WholeSalerId);
-           
-            //bool IsUserWholeSaler = await  _ApplicationUserManager.IsUserInRoll(User, RollNames.WholeSaler);
-            //if (!IsUserWholeSaler)
-            //{
-            //    throw new MyException((int)ExceptionCodes.UnAuthorized, String.Format("The wholesaler must exist"));
-            //}
+          
 
             if (quoteRequest.RequestedItems == null || quoteRequest.RequestedItems.Count == 0)
             {
                 throw new MyException((int)ExceptionCodes.InvaildServiceDataRequest, String.Format("The order cannot be empty"));
             }
-            Result<SaleQuote> Result = new Result<SaleQuote>();
-            List<_Stock> StockRecords = await _StockRepositoy.GetQuoteRequestedStockRecords(quoteRequest);
 
-            Dictionary<string, _Stock> StockDic = new Dictionary<string, _Stock>();
-            foreach(var item in StockRecords) 
+            Dictionary<string, QuoteItemRequest> RequestedItemsDic = new Dictionary<string, QuoteItemRequest>();
+            foreach (var item in quoteRequest.RequestedItems)
             {
-                if (item.WholeSalerId != WholeSalerId)
+               
+                if (RequestedItemsDic.ContainsKey(item.BeerName))
                 {
-                    throw new MyException((int)ExceptionCodes.UnAuthorized, String.Format("The beer must be sold by the wholesaler"));
-                  
+                    throw new MyException((int)ExceptionCodes.UnprocessableEntity, String.Format("There can't be any duplicate in the order"));
                 }
-                if (StockDic.ContainsKey(item.Beer.Name))
-                {
-                    throw new MyException((int)ExceptionCodes.InvaildServiceDataRequest, String.Format("There can't be any duplicate in the order"));
-                }
-                StockDic.Add(item.Beer.Name, item);
+                RequestedItemsDic.Add(item.BeerName, item);
 
             }
 
-            SaleQuote saleQuote = new SaleQuote();
-            foreach (var item in quoteRequest.RequestedItems) 
+
+            ApplicationUser User = await _UserManager.FindByNameAsync(quoteRequest.WholeSalerName);
+
+            bool IsUserWholeSaler = await _UserManager.IsInRoleAsync(User, RollNames.WholeSaler);
+            if (!IsUserWholeSaler)
             {
-                if (!StockDic.ContainsKey(item.BeerName))
+                throw new MyException((int)ExceptionCodes.UnAuthorized, String.Format("The wholesaler must exist"));
+            }
+
+            Result<SaleQuote> Result = new Result<SaleQuote>();
+            List<_Stock> StockRecords = await _StockRepositoy.GetQuoteRequestedStockRecords(quoteRequest);
+
+            SaleQuote saleQuote = new SaleQuote();
+            foreach (var item in StockRecords) 
+            {
+                if (item.WholeSalerId != User.Id)
                 {
-                    //
-                    throw new MyException((int)ExceptionCodes.InvaildServiceDataRequest, String.Format("The beer must be sold by the wholesaler"));
+                    throw new MyException((int)ExceptionCodes.UnAuthorized, String.Format("The beer must be sold by the wholesaler"));
+
+                }
+               
+
+                if (RequestedItemsDic[item.Beer.Name].Quantity > item.Quantity)
+                {
+                    throw new MyException((int)ExceptionCodes.UnprocessableEntity, String.Format("The number of beers ordered cannot be greater than the wholesaler's stock"));
                 }
 
-                if (StockDic[item.BeerName].Quantity < item.Quantity)
-                {
-                    throw new MyException((int)ExceptionCodes.InvaildServiceDataRequest, String.Format("The number of beers ordered cannot be greater than the wholesaler's stock"));
-                }
-
-                saleQuote.AddQuoteItem(new QuoteItem() { Beer = StockDic[item.BeerName].Beer, Quantity = StockDic[item.BeerName].Quantity });
+                saleQuote.AddQuoteItem(new QuoteItem() { Beer = item.Beer, Quantity = RequestedItemsDic[item.Beer.Name].Quantity });
             }
 
             saleQuote.ClientName = quoteRequest.ClientName;
@@ -80,5 +83,13 @@ namespace BreweryWholesaleService.Core.Services
 
 
         }
+
+
+
+
+
+
+
+
     }
 }

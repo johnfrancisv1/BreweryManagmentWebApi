@@ -20,5 +20,7 @@ namespace BreweryWholesaleService.Infrastructure.Repositories
         {
            return await _DbContext.Users.AsNoTracking().Where(u => u.UserName == UserName).Select(U => U.Id).SingleOrDefaultAsync();
         }
+
+       
     }
 }

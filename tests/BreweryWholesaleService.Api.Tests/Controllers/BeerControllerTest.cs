@@ -27,7 +27,6 @@ namespace BreweryWholesaleService.Api.Tests.Controllers
         private readonly IFixture _fixture;
         private readonly Mock<IBeerService> _BeerServiceMock;
         private readonly Mock<UserManager<ApplicationUser>> _UserManagerMock;
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly BeerController _sut;
        
         
@@ -60,7 +59,7 @@ namespace BreweryWholesaleService.Api.Tests.Controllers
             Result.Should().NotBeNull();
             Result.Should().BeAssignableTo<OkObjectResult>();
             Result.As<OkObjectResult>().Value.Should().NotBeNull().And.BeOfType(BeerListMock.GetType());
-
+            _BeerServiceMock.Verify(x => x.GetBeersByBreweryName("BreweryName"), Times.Once);
 
         }
         [Fact]
@@ -78,7 +77,7 @@ namespace BreweryWholesaleService.Api.Tests.Controllers
             Result.Should().NotBeNull();
             Result.Should().BeAssignableTo<ObjectResult>();
             Result.As<ObjectResult>().StatusCode.Should().Be(StatusCodes.Status404NotFound);
-
+            _BeerServiceMock.Verify(x => x.GetBeersByBreweryName("BreweryName"), Times.Once);
 
         }
 
@@ -93,7 +92,8 @@ namespace BreweryWholesaleService.Api.Tests.Controllers
             //  FakeIdentity.GenerateFakeIdentity(RollNames)
             var ResaultMock = _fixture.Create<int>();
             RegisterNewBeerModel RegisterModel = new RegisterNewBeerModel() { Name = "test", AlcoholContent = 10, Price = 10 };
-            _BeerServiceMock.Setup(x => x.CreateNewBeer(RegisterModel,"test")).ReturnsAsync(ResaultMock);
+           
+            _BeerServiceMock.Setup(x => x.CreateNewBeer(RegisterModel,It.IsAny<String>())).ReturnsAsync(ResaultMock);
             
 
 
@@ -103,7 +103,7 @@ namespace BreweryWholesaleService.Api.Tests.Controllers
             Result.Should().NotBeNull();
             Result.Should().BeAssignableTo<OkObjectResult>();
             Result.As<OkObjectResult>().Value.Should().NotBeNull().And.BeOfType(ResaultMock.GetType());
-
+            _BeerServiceMock.Verify(x => x.CreateNewBeer(RegisterModel, It.IsAny<String>()), Times.Once);
 
         }
 

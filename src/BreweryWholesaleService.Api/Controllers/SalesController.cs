@@ -1,4 +1,5 @@
 ﻿using BreweryWholesaleService.Api.Helper;
+using BreweryWholesaleService.Core.EntityModels;
 using BreweryWholesaleService.Core.Helper;
 using BreweryWholesaleService.Core.Interfaces.Services;
 using BreweryWholesaleService.Core.Models.Sales;
@@ -7,6 +8,7 @@ using BreweryWholesaleService.Core.Services;
 using BreweryWholesaleService.Core.StaticData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Security.Claims;
@@ -18,6 +20,7 @@ namespace BreweryWholesaleService.Api.Controllers
     public class SalesController : ControllerBase
     {
         private readonly ISalesService _SalesService;
+       
 
         public SalesController(ISalesService SalesService)
         {
@@ -31,12 +34,13 @@ namespace BreweryWholesaleService.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = RollNames.WholeSaler)]
+      //  [Authorize(Roles = RollNames.WholeSaler)]
         public async Task<IActionResult> GetQuote([FromBody] QuoteRequest QuoteRequest)
         {
 
-            var WholeSalerUserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-          
+         
+
+
 
 
             if (QuoteRequest == null)
@@ -46,7 +50,7 @@ namespace BreweryWholesaleService.Api.Controllers
 
             try
             {
-                SaleQuote SaleQuote  = await _SalesService.GetSaleQuote(QuoteRequest, WholeSalerUserID);
+                SaleQuote SaleQuote  = await _SalesService.GetSaleQuote(QuoteRequest);
                 return Ok(SaleQuote);
             }
             catch (MyException E)
