@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BreweryWholesaleService.Infrastructure.Migrations
 {
-    [DbContext(typeof(BreweryContext))]
+    [DbContext(typeof(ApplicationContext))]
     partial class BreweryContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

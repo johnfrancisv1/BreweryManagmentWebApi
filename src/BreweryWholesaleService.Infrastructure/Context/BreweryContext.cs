@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace BreweryWholesaleService.Infrastructure.EntityModels
 {
-    public partial class BreweryContext : IdentityDbContext<ApplicationUser>
+    public partial class ApplicationContext : IdentityDbContext<ApplicationUser>
     {
-        public BreweryContext(DbContextOptions<BreweryContext> options)
+        public ApplicationContext(DbContextOptions<ApplicationContext> options)
         : base(options)
         {
         }

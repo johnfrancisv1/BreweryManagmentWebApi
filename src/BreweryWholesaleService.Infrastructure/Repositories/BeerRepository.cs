@@ -17,10 +17,10 @@ namespace BreweryWholesaleService.Infrastructure.Repositories
     public class BeerRepository : IBeerRepository
     {
 
-        private readonly BreweryContext _dbContext;
+        private readonly ApplicationContext _dbContext;
         private readonly IMapper _mapper;
 
-        public BeerRepository(BreweryContext dbContext, IMapper mapper)
+        public BeerRepository(ApplicationContext dbContext, IMapper mapper)
         {
             this._dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             this._mapper = mapper;

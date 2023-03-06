@@ -93,7 +93,7 @@ namespace BreweryWholesaleService.Api.Controllers
 
             try
             {
-               int Result = await _beerService.DeleteBeerByName(BearName);
+               int resault = await _beerService.DeleteBeerByName(BearName);
                 return NoContent();
             }catch(MyException E)
             {

@@ -18,11 +18,11 @@ namespace BreweryWholesaleService.Infrastructure.Data
 {
     public class DataSeeder : IDataSeeder
     {
-        private readonly BreweryContext _DbContext;
+        private readonly ApplicationContext _DbContext;
         private readonly UserManager<ApplicationUser> _UserManager;
         private readonly RoleManager<IdentityRole> _RoleManager;
        
-        public DataSeeder(BreweryContext DbContext, UserManager<ApplicationUser> UserManager, RoleManager<IdentityRole> RoleManager) 
+        public DataSeeder(ApplicationContext DbContext, UserManager<ApplicationUser> UserManager, RoleManager<IdentityRole> RoleManager) 
         {
             this._DbContext = DbContext;
             this._RoleManager = RoleManager;

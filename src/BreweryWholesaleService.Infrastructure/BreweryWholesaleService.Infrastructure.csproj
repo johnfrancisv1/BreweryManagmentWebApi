@@ -22,8 +22,4 @@
     <ProjectReference Include="..\BreweryWholesaleService.Core\BreweryWholesaleService.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
-  </ItemGroup>
-
 </Project>

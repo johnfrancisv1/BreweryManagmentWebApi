@@ -48,14 +48,16 @@ namespace BreweryWholesaleService.Api.Tests.Controllers
         public async void GetBeersByBrewery_ShouldReturnOKRespond_WhenDataFound()
         {
 
-          //  FakeIdentity.GenerateFakeIdentity(RollNames)
+            //Arrange
+            //  FakeIdentity.GenerateFakeIdentity(RollNames)
             var BeerListMock = _fixture.Create<IEnumerable<_Beer>>();
             _BeerServiceMock.Setup(x => x.GetBeersByBreweryName("BreweryName")).ReturnsAsync(BeerListMock);
 
-            
 
+            //Act
             var Result = await _sut.GetBeersByBrewery("BreweryName").ConfigureAwait(false);
 
+            //Assert
             Result.Should().NotBeNull();
             Result.Should().BeAssignableTo<OkObjectResult>();
             Result.As<OkObjectResult>().Value.Should().NotBeNull().And.BeOfType(BeerListMock.GetType());
@@ -65,14 +67,16 @@ namespace BreweryWholesaleService.Api.Tests.Controllers
         [Fact]
         public async void GetBeersByBrewery_ShouldReturnNotFoundRespond_WhenInvaildBreweryUserName()
         {
-
+            //Arrange
             //  FakeIdentity.GenerateFakeIdentity(RollNames)
-         //   var BeerListMock = _fixture.Create<MyException>();
+            //   var BeerListMock = _fixture.Create<MyException>();
             _BeerServiceMock.Setup(x => x.GetBeersByBreweryName("BreweryName")).ThrowsAsync(new MyException((int)ExceptionCodes.RecordNotFound,""));
 
 
-
+            //Act
             var Result = await _sut.GetBeersByBrewery("BreweryName").ConfigureAwait(false);
+
+            //Assert
 
             Result.Should().NotBeNull();
             Result.Should().BeAssignableTo<ObjectResult>();
@@ -86,6 +90,8 @@ namespace BreweryWholesaleService.Api.Tests.Controllers
         [Fact]
         public async void AddNewBeer_ShouldReturnOKRespond_WhenPassingVaildModel()
         {
+
+            //Arrange
             var user = FakeIdentity.GenerateFakeIdentity(RollNames.Brewery);
             _sut.ControllerContext = new ControllerContext();
             _sut.ControllerContext.HttpContext = new DefaultHttpContext { User = user };
@@ -97,9 +103,10 @@ namespace BreweryWholesaleService.Api.Tests.Controllers
             
 
 
-
+            // Act
             var Result = await _sut.AddNewBear(RegisterModel).ConfigureAwait(false);
 
+            //Assert
             Result.Should().NotBeNull();
             Result.Should().BeAssignableTo<OkObjectResult>();
             Result.As<OkObjectResult>().Value.Should().NotBeNull().And.BeOfType(ResaultMock.GetType());

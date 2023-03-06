@@ -27,10 +27,10 @@ namespace BreweryWholesaleService.Api.Controllers
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly BreweryContext _dbContext;
+        private readonly ApplicationContext _dbContext;
         private readonly RoleManager<IdentityRole> _rollManager;
         private readonly ILogger _logger;
-        public UserManagerController(IConfiguration configuration, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, BreweryContext _dbContex, RoleManager<IdentityRole> rollManager, ILogger<UserManagerController> _logger)
+        public UserManagerController(IConfiguration configuration, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ApplicationContext _dbContex, RoleManager<IdentityRole> rollManager, ILogger<UserManagerController> _logger)
         {
             this._configuration = configuration;
             this._signInManager = signInManager;
@@ -41,12 +41,12 @@ namespace BreweryWholesaleService.Api.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("getToken")]
+        [HttpGet("getToken")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> GetToken([FromBody] LoginModel LogIn)
+        public async Task<ActionResult> GetToken([FromQuery] LoginModel LogIn)
         {
 
             if (!ModelState.IsValid)
@@ -87,7 +87,7 @@ namespace BreweryWholesaleService.Api.Controllers
                         var token = tokenhandler.CreateToken(tokenDescriptor);
                         var tokenStr = tokenhandler.WriteToken(token);
 
-                        return Ok(new { Token = tokenStr });
+                        return Ok(new  { Token = tokenStr });
                     }
                     else
                     {

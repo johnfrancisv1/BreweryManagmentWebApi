@@ -11,8 +11,8 @@ namespace BreweryWholesaleService.Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly BreweryContext _DbContext;
-        public UserRepository(BreweryContext DbContext)
+        private readonly ApplicationContext _DbContext;
+        public UserRepository(ApplicationContext DbContext)
         {
             this._DbContext= DbContext;
         }

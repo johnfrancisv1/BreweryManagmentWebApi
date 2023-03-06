@@ -20,7 +20,7 @@ var connectionString = builder.Configuration.GetConnectionString("BreweryWebAppl
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
-builder.Services.AddDbContext<BreweryContext>(options =>
+builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -32,7 +32,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 
 
 })
-    .AddEntityFrameworkStores<BreweryContext>();
+    .AddEntityFrameworkStores<ApplicationContext>();
 
 
 builder.Logging.ClearProviders();
