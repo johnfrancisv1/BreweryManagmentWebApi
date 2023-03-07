@@ -6,7 +6,8 @@ This project aims to develop a clean and efficient RESTful Web API using the fol
 - Database Management: Entity Framework Core 6
 - Identity: .NET Core Identity Role-Based
 - Authentication/Authorization: Identity is configured to use JWT Tokens for authentication
-
+## Database Design
+![DatabaseDesign](https://github.com/johnfrancisv1/BreweryManagmentWebApi/blob/30303f97f854c7b0c6f181325deeee1e640ccb39/Documentation/Images/DatabaseDesign.png)
 ## Solution Architecture
 
 The solution is organized into the following directories:
@@ -22,12 +23,16 @@ The solution is organized into the following directories:
 
 In this application, breweries and wholesalers are represented as users with Brewery and Wholesaler roles. The Web API is supported with a Swagger UI, where the API functionality is fully tested using the Swagger interface.
 
+![SwaggerUI](https://github.com/johnfrancisv1/BreweryManagmentWebApi/blob/30303f97f854c7b0c6f181325deeee1e640ccb39/Documentation/Images/SwaggerUI.png)
+
 To test controller actions that require authorization, follow these steps:
 
 1. Get the user JWT token by using the `api/UserManager/getToken` API and provide the username and password.
+
+![GetJWTToken](https://github.com/johnfrancisv1/BreweryManagmentWebApi/blob/30303f97f854c7b0c6f181325deeee1e640ccb39/Documentation/Images/RequestToken.png)
 2. Enter the authorization token via the Swagger UI.
-## Database Design
-![DatabaseDesign](https://github.com/johnfrancisv1/BreweryManagmentWebApi/tree/main/Documentation/Images/DatabaseDesign.png)
+
+![EnterJWTToken](https://github.com/johnfrancisv1/BreweryManagmentWebApi/blob/30303f97f854c7b0c6f181325deeee1e640ccb39/Documentation/Images/EnterTokenToken.png)
 ## Testing
 
 We have implemented testing using .NET Core 6 xUnit for API-level testing and core-level testing using mocking, auto fixture, and fluent assertion.
@@ -46,5 +51,8 @@ Core-level testing includes:
   - `GetSaleQuote`: Should throw an exception when the number of beers ordered exceeds the wholesaler's stock.
   - `GetSaleQuote`: Should throw an exception when the quote request contains beers that are not sold by the wholesaler.
   - `GetSaleQuote`: Should throw an exception when the quote request contains duplicate beer orders.
+  
+  
+ ![XUnitTestResault](https://github.com/johnfrancisv1/BreweryManagmentWebApi/blob/30303f97f854c7b0c6f181325deeee1e640ccb39/Documentation/Images/RunningTest.png)
 
 Overall, this project demonstrates best practices for developing a clean and efficient RESTful Web API using .NET Core 6 and related technologies.
