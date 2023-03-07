@@ -12,9 +12,9 @@ This project aims to develop a clean and efficient RESTful Web API using the fol
 The solution is organized into the following directories:
 
 - `src`
-  - `BreweryWholesaleService.Api`
-  - `BreweryWholesaleService.Core`
-  - `BreweryWholesaleService.Infrastructure`
+  - `BreweryWholesaleService.Api`: API controllers and actions, service registration, authentication authorization configuration
+  - `BreweryWholesaleService.Core`: Contains interfaces, shared classes, and entity classes for the project. Service implementations using dependency injection between services 
+  - `BreweryWholesaleService.Infrastructure`: Contains the actual implementation for the database repository interfaces, implementation of the Entity Framework Database Context, and configuration of the Identity DbContext as part of the main DatabaseContext.
 - `Tests`
   - `BreweryWholesaleService.Api.Tests`
   - `BreweryWholesaleService.Core.Tests`
@@ -24,7 +24,7 @@ In this application, breweries and wholesalers are represented as users with Bre
 
 To test controller actions that require authorization, follow these steps:
 
-1. Get the user JWT token by using the `api/UserManager/getToken` API and providing the username and password.
+1. Get the user JWT token by using the `api/UserManager/getToken` API and provide the username and password.
 2. Enter the authorization token via the Swagger UI.
 ## Database Design
 ## Testing
