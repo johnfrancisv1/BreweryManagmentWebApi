@@ -27,7 +27,7 @@ To test controller actions that require authorization, follow these steps:
 1. Get the user JWT token by using the `api/UserManager/getToken` API and provide the username and password.
 2. Enter the authorization token via the Swagger UI.
 ## Database Design
-![DatabaseDesign](https://github.com/johnfrancisv1/BreweryManagmentWebApi/Documentation/Images/DatabaseDesign.png)
+![DatabaseDesign](https://github.com/johnfrancisv1/BreweryManagmentWebApi/tree/main/Documentation/Images/DatabaseDesign.png)
 ## Testing
 
 We have implemented testing using .NET Core 6 xUnit for API-level testing and core-level testing using mocking, auto fixture, and fluent assertion.
